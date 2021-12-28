@@ -15,8 +15,12 @@ class CustomCrop extends Component {
     constructor(props) {
         super(props);
         this.state = {
+<<<<<<< HEAD
             viewHeight:
                 Dimensions.get('window').width * (props.height / props.width),
+=======
+            viewHeight: Dimensions.get('window').width * (props.height / props.width),
+>>>>>>> 2f3fdde... fix: Area display
             height: props.height,
             width: props.width,
             image: props.initialImage,
@@ -93,7 +97,11 @@ class CustomCrop extends Component {
                     dx: corner.x,
                     dy: corner.y,
                 },
+<<<<<<< HEAD
             ]),
+=======
+            ], {useNativeDriver: false}),
+>>>>>>> 2f3fdde... fix: Area display
             onPanResponderRelease: () => {
                 corner.flattenOffset();
                 this.updateOverlayString();
@@ -140,9 +148,17 @@ class CustomCrop extends Component {
     }
 
     imageCoordinatesToViewCoordinates(corner) {
+        /*
+            imgWidth = 540
+            detectionHeight = 320
+            imgWidth / detectionHeight = 1.6875
+
+        */
+        const detectionHeight = 320 // FIXME: hardcoded value in document-scanner
+        const screenWidth = Dimensions.get('window').width
         return {
-            x: (corner.x * Dimensions.get('window').width) / this.state.width,
-            y: (corner.y * this.state.viewHeight) / this.state.height,
+            x: (corner.x * screenWidth / detectionHeight) - screenWidth,
+            y: (corner.y * screenWidth) / detectionHeight
         };
     }
 
@@ -155,7 +171,15 @@ class CustomCrop extends Component {
         };
     }
 
+<<<<<<< HEAD
     render() {
+=======
+
+    render() {
+        console.log('state cropper : ', this.state)
+        console.log('dimensions : ', Dimensions.get('window'))
+        console.log('given coordinates : ', this.props.rectangleCoordinates)
+>>>>>>> 2f3fdde... fix: Area display
         return (
             <View
                 style={{
@@ -293,7 +317,11 @@ const s = (props) => ({
         backgroundColor: props.handlerColor || 'blue',
     },
     image: {
+<<<<<<< HEAD
         width: Dimensions.get('window').width,
+=======
+        width: Dimensions.get('window').width, //'100%'
+>>>>>>> 2f3fdde... fix: Area display
         position: 'absolute',
     },
     bottomButton: {
@@ -317,7 +345,11 @@ const s = (props) => ({
     cropContainer: {
         position: 'absolute',
         left: 0,
+<<<<<<< HEAD
         width: Dimensions.get('window').width,
+=======
+        width: Dimensions.get('window').width, //'100%'
+>>>>>>> 2f3fdde... fix: Area display
         top: 0,
     },
 });
