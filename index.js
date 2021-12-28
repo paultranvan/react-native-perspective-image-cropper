@@ -140,9 +140,17 @@ class CustomCrop extends Component {
     }
 
     imageCoordinatesToViewCoordinates(corner) {
+        /*
+            imgWidth = 540
+            detectionHeight = 320
+            imgWidth / detectionHeight = 1.6875
+
+        */
+        const detectionHeight = 320 // FIXME: hardcoded value in document-scanner
+        const screenWidth = Dimensions.get('window').width
         return {
-            x: (corner.x * Dimensions.get('window').width) / this.state.width,
-            y: (corner.y * this.state.viewHeight) / this.state.height,
+            x: (corner.x * screenWidth / detectionHeight) - screenWidth,
+            y: (corner.y * screenWidth) / detectionHeight
         };
     }
 
