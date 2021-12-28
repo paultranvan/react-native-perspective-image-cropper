@@ -146,7 +146,7 @@ class CustomCrop extends Component {
             imgWidth / detectionHeight = 1.6875
 
         */
-        const detectionHeight = 320 // FIXME: hardcoded value in document-scanner
+        const detectionHeight = 500 // FIXME: hardcoded value in document-scanner
         const screenWidth = Dimensions.get('window').width
         return {
             x: (corner.x * screenWidth / detectionHeight) - screenWidth,
