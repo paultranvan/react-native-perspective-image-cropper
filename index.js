@@ -120,6 +120,7 @@ class CustomCrop extends Component {
             height: this.state.height,
             width: this.state.width,
         };
+
         NativeModules.CustomCropManager.crop(
             coordinates,
             this.state.image,
@@ -142,11 +143,14 @@ class CustomCrop extends Component {
     imageCoordinatesToViewCoordinates(corner) {
         /*
             imgWidth = 540
-            detectionHeight = 320
-            imgWidth / detectionHeight = 1.6875
+            imgHeight = 1088
+            detectionHeight = 500
+            screenWidth = 384
+            screenHeight = 781
+            imgWidth / detectionHeight = 1.08
 
         */
-        const detectionHeight = 500 // FIXME: hardcoded value in document-scanner
+        const detectionHeight = 500 // FIXME: hardcoded value in native document-scanner
         const screenWidth = Dimensions.get('window').width
         return {
             x: (corner.x * screenWidth / detectionHeight) - screenWidth,
@@ -155,12 +159,14 @@ class CustomCrop extends Component {
     }
 
     viewCoordinatesToImageCoordinates(corner) {
+        /*
+            ratio = 1088/384 = 2,833
+        */
+        const ratio = this.state.height / Dimensions.get('window').width
         return {
-            x:
-                (corner.x._value / Dimensions.get('window').width) *
-                this.state.width,
-            y: (corner.y._value / this.state.viewHeight) * this.state.height,
-        };
+            x:  corner.x._value * ratio, 
+            y: corner.y._value * ratio
+        }
     }
 
     render() {
