@@ -11,12 +11,12 @@ import Svg, { Polygon } from 'react-native-svg';
 
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 
+const NATIVE_DETECTION_HEIGHT = 500; // hardcoded value in native document-scanner
 class CustomCrop extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            viewHeight:
-                Dimensions.get('window').width * (props.height / props.width),
+            viewHeight: Dimensions.get('window').width * (props.height / props.width),
             height: props.height,
             width: props.width,
             image: props.initialImage,
@@ -150,23 +150,39 @@ class CustomCrop extends Component {
             imgWidth / detectionHeight = 1.08
 
         */
-        const detectionHeight = 500 // FIXME: hardcoded value in native document-scanner
         const screenWidth = Dimensions.get('window').width
+        console.log('screen width : ', screenWidth)
+        console.log('screen height : ', Dimensions.get('window').height)
+        console.log('img width : ', this.state.width)
+        console.log('img height : ', this.state.height)
+        console.log('view height : ', this.state.viewHeight)
         return {
-            x: (corner.x * screenWidth / detectionHeight) - screenWidth,
-            y: (corner.y * screenWidth) / detectionHeight
+            x: (corner.x * screenWidth / NATIVE_DETECTION_HEIGHT) - (this.state.viewHeight - screenWidth),
+            y: (corner.y * screenWidth) / NATIVE_DETECTION_HEIGHT
         };
     }
 
     viewCoordinatesToImageCoordinates(corner) {
         /*
             ratio = 1088/384 = 2,833
+            ratio = 2000 / 360 = 5.55
         */
-        const ratio = this.state.height / Dimensions.get('window').width
-        return {
-            x:  corner.x._value * ratio, 
-            y: corner.y._value * ratio
+        const screenWidth = Dimensions.get('window').width
+        const screenHeight = Dimensions.get('window').height
+        /*const diffWidthHeight = this.state.viewHeight - screenWidth
+        let ratio 
+        if (diffWidthHeight > screenWidth ) {
+            ratio = this.state.height / (this.state.viewHeight - screenWidth)
+        } else {
+            ratio = this.state.height / (this.state.viewHeight - (this.state.viewHeight - diffWidthHeight))
+        }*/
+        console.log('ratio : ', ratio)
+        const coordinates = {
+            x: (corner.x._value / screenWidth * NATIVE_DETECTION_HEIGHT),
+            y: (corner.y._value / screenWidth) * NATIVE_DETECTION_HEIGHT
         }
+        console.log('crop coordonates : ', coordinates)
+        return coordinates
     }
 
     render() {
