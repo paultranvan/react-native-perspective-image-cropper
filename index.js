@@ -176,31 +176,17 @@ class CustomCrop extends Component {
     }
 
     viewCoordinatesToImageCoordinates(corner) {
-        /*
-            ratio = 1088/384 = 2,833
-            ratio = 2000 / 360 = 5.55
-        */
         const screenWidth = Dimensions.get('window').width
-        const screenHeight = Dimensions.get('window').height
-        /*const diffWidthHeight = this.state.viewHeight - screenWidth
-        let ratio 
-        if (diffWidthHeight > screenWidth ) {
-            ratio = this.state.height / (this.state.viewHeight - screenWidth)
-        } else {
-            ratio = this.state.height / (this.state.viewHeight - (this.state.viewHeight - diffWidthHeight))
-        }*/
-        //console.log('ratio : ', ratio)
         if (Platform.OS === 'ios') {
             return {
-                x: corner.x / screenWidth * this.state.width,
-                y: (corner.y / this.state.viewHeight) * this.state.height,
+                x: corner.x._value / screenWidth * this.state.width,
+                y: (corner.y._value / this.state.viewHeight) * this.state.height,
             }
         }
         return {
             x: (corner.x._value / screenWidth * NATIVE_DETECTION_HEIGHT),
             y: (corner.y._value / screenWidth * NATIVE_DETECTION_HEIGHT)
         }
-
     }
 
     render() {
