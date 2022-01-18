@@ -6,6 +6,7 @@ import {
     Image,
     View,
     Animated,
+    Platform
 } from 'react-native';
 import Svg, { Polygon } from 'react-native-svg';
 
@@ -151,15 +152,27 @@ class CustomCrop extends Component {
 
         */
         const screenWidth = Dimensions.get('window').width
+        const screenHeight = Dimensions.get('window').height
         console.log('screen width : ', screenWidth)
         console.log('screen height : ', Dimensions.get('window').height)
         console.log('img width : ', this.state.width)
         console.log('img height : ', this.state.height)
         console.log('view height : ', this.state.viewHeight)
+        const screenRatio = screenWidth / screenHeight
+        const imageRatio = this.state.width / this.state.height
+        console.log('screen ratio : ', screenRatio)
+        console.log('img ratio : ', imageRatio)
+        if (Platform.OS === 'ios') {
+            return {
+                x: corner.x * screenWidth / this.state.width,
+                y: (corner.y * this.state.viewHeight) / this.state.height,
+            }
+        }
         return {
             x: (corner.x * screenWidth / NATIVE_DETECTION_HEIGHT) - (this.state.viewHeight - screenWidth),
             y: (corner.y * screenWidth) / NATIVE_DETECTION_HEIGHT
-        };
+        }
+
     }
 
     viewCoordinatesToImageCoordinates(corner) {
@@ -176,13 +189,18 @@ class CustomCrop extends Component {
         } else {
             ratio = this.state.height / (this.state.viewHeight - (this.state.viewHeight - diffWidthHeight))
         }*/
-        console.log('ratio : ', ratio)
-        const coordinates = {
-            x: (corner.x._value / screenWidth * NATIVE_DETECTION_HEIGHT),
-            y: (corner.y._value / screenWidth) * NATIVE_DETECTION_HEIGHT
+        //console.log('ratio : ', ratio)
+        if (Platform.OS === 'ios') {
+            return {
+                x: corner.x / screenWidth * this.state.width,
+                y: (corner.y / this.state.viewHeight) * this.state.height,
+            }
         }
-        console.log('crop coordonates : ', coordinates)
-        return coordinates
+        return {
+            x: (corner.x._value / screenWidth * NATIVE_DETECTION_HEIGHT),
+            y: (corner.y._value / screenWidth * NATIVE_DETECTION_HEIGHT)
+        }
+
     }
 
     render() {
