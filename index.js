@@ -335,7 +335,10 @@ const s = (props) => ({
         position: 'absolute',
         left: 0,
         width: Dimensions.get('window').width,
-        top: 0,
+        top: '50%',
+        transform: [{
+            translateY: -Dimensions.get('window').width * (props.height / props.width) / 2
+        }]
     },
 });
 
