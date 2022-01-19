@@ -24,6 +24,7 @@ class CustomCrop extends Component {
             moving: false,
         };
 
+
         this.state = {
             ...this.state,
             topLeft: new Animated.ValueXY(
@@ -142,26 +143,8 @@ class CustomCrop extends Component {
     }
 
     imageCoordinatesToViewCoordinates(corner) {
-        /*
-            imgWidth = 540
-            imgHeight = 1088
-            detectionHeight = 500
-            screenWidth = 384
-            screenHeight = 781
-            imgWidth / detectionHeight = 1.08
-
-        */
         const screenWidth = Dimensions.get('window').width
-        const screenHeight = Dimensions.get('window').height
-        console.log('screen width : ', screenWidth)
-        console.log('screen height : ', Dimensions.get('window').height)
-        console.log('img width : ', this.state.width)
-        console.log('img height : ', this.state.height)
-        console.log('view height : ', this.state.viewHeight)
-        const screenRatio = screenWidth / screenHeight
-        const imageRatio = this.state.width / this.state.height
-        console.log('screen ratio : ', screenRatio)
-        console.log('img ratio : ', imageRatio)
+
         if (Platform.OS === 'ios') {
             return {
                 x: corner.x * screenWidth / this.state.width,
@@ -209,7 +192,7 @@ class CustomCrop extends Component {
                             s(this.props).image,
                             { height: this.state.viewHeight },
                         ]}
-                        resizeMode="contain"
+                        resizeMode="contain" 
                         source={{ uri: this.state.image }}
                     />
                     <Svg
